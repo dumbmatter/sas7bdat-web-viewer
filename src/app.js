@@ -2,7 +2,8 @@ const EventEmitter = require('events').EventEmitter;
 const React = require('react');
 const ReactDOM = require('react-dom');
 const SAS7BDAT = require('./sas7bdat');
-const Table = require('./components/table')
+const ExportCsvButton = require('./components/export-csv-button');
+const Table = require('./components/table');
 
 var emitter = new EventEmitter();
 
@@ -12,18 +13,6 @@ const FilenameLabel = props => {
     }
 
     return <span className="alert alert-info" style={{marginLeft: '0.25em', paddingTop: '16px', verticalAlign: '2px'}}>{props.filename}</span>;
-};
-
-class ExportCsvButton extends React.Component {
-    exportCsv() {
-console.log(this);
-        console.log('Export this to CSV', this.props.rows);
-    }
-
-    render() {
-console.log(this.props);
-        return <button className="btn btn-secondary" disabled={this.props.rows.length === 0} onClick={this.exportCsv}>Export CSV</button>;
-    }
 };
 
 class App extends React.Component {
