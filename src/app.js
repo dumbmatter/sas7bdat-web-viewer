@@ -6,7 +6,7 @@ const Table = require('./components/table')
 
 var emitter = new EventEmitter();
 
-const FilenameLabel = (props) => {
+const FilenameLabel = props => {
     if (props.filename === undefined) {
         return <span></span>;
     }
