@@ -10,7 +10,7 @@ class Table extends React.Component {
         const rows = this.props.rows.slice(1)
 
         return (
-            <table className="table table-bordered table-hover table-sas7bdat">
+            <table className="table table-bordered table-hover table-sm table-sas7bdat">
                 <thead>
                     <tr>
                         {colNames.map((field, j) => <th key={j}>{field}</th>)}
