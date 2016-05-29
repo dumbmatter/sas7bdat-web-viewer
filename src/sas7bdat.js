@@ -489,6 +489,8 @@ class SAS7BDAT {
         this.sent_header = false;
         this.current_row_in_file_index = 0;
         this.current_row_on_page_index = 0;
+
+        pos = 0;
     }
 
     async parse_header() {
