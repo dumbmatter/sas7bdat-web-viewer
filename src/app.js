@@ -6,13 +6,23 @@ const Table = require('./components/table')
 
 var emitter = new EventEmitter();
 
+const FilenameLabel = (props) => {
+    if (props.filename === undefined) {
+        return <span></span>;
+    }
+
+    return <span className="alert alert-info" style={{marginLeft: '0.25em', paddingTop: '16px', verticalAlign: '2px'}}>{props.filename}</span>;
+};
+
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rows: []
+            filename: undefined,
+            rows: [],
         };
 
+        emitter.on('filename', filename => this.setState({filename}));
         emitter.on('rows', rows => this.setState({rows}));
     }
 
@@ -27,7 +37,7 @@ class App extends React.Component {
                             <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
                             Select SAS7BDAT File
                         </label>
-                        <span id="sas-file-label" style={{marginLeft: '0.25em'}}></span>
+                        <FilenameLabel filename={this.state.filename} />
                     </div>
                 </div>
                 <div className="container-fluid" style={{textAlign: 'center'}}>
@@ -44,10 +54,9 @@ ReactDOM.render(
 );
 
 const fileEl = document.getElementById('sas-file');
-const fileLabelEl = document.getElementById('sas-file-label');
 fileEl.addEventListener('change', () => {
     if (fileEl.files.length > 0) {
-        fileLabelEl.innerHTML = `<span class="alert alert-info" style="padding-top: 16px; vertical-align: 2px">${fileEl.value.replace('C:\\fakepath\\', '')}</span>`;
+        emitter.emit('filename', fileEl.value.replace('C:\\fakepath\\', ''));
 
         const file = fileEl.files[0];
 
