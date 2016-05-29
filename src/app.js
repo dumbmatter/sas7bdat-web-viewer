@@ -26,9 +26,12 @@ ReactDOM.render(
     document.getElementById('table-wrapper')
 );
 
-const fileEl = document.getElementById("sas-file");
-fileEl.addEventListener("change", () => {
+const fileEl = document.getElementById('sas-file');
+const fileLabelEl = document.getElementById('sas-file-label');
+fileEl.addEventListener('change', () => {
     if (fileEl.files.length > 0) {
+        fileLabelEl.innerHTML = `<span class="alert alert-info" style="padding-top: 13px">${fileEl.value.replace('C:\\fakepath\\', '')}</span>`;
+
         const file = fileEl.files[0];
 
         const reader = new window.FileReader();

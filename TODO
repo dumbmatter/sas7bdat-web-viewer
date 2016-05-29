@@ -1,13 +1,17 @@
 Don't read whole file if it's huge
 - if not possible, maybe don't render whole file if it's huge
 
+sticky table header
+
 show header info
 
 parsing in web worker, with progress bar
 
 react prod mode
 
-display errors/warnings
+error handling
+  display errors/warnings
+  show filename as danger
 
 to csv button
 
