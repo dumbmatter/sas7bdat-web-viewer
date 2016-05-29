@@ -1,5 +1,3 @@
-somehow combine back with sas7bdat-js
-
 Don't read whole file if it's huge
 - if not possible, maybe don't render whole file if it's huge
 

@@ -13,7 +13,7 @@
     "babel-runtime": "^6.9.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
-    "sas7bdat": "file:../sas7bdat-js"
+    "sas7bdat": "^0.1.5"
   },
   "devDependencies": {
     "babel-plugin-transform-async-to-generator": "^6.8.0",
