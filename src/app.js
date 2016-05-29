@@ -14,17 +14,16 @@ const FilenameLabel = props => {
     return <span className="alert alert-info" style={{marginLeft: '0.25em', paddingTop: '16px', verticalAlign: '2px'}}>{props.filename}</span>;
 };
 
-const WithFileButtons = props => {
-    if (props.filename === undefined) {
-        return <div></div>;
+class ExportCsvButton extends React.Component {
+    exportCsv() {
+console.log(this);
+        console.log('Export this to CSV', this.props.rows);
     }
 
-    return (
-        <div className="pull-xs-right" style={{paddingTop: '6px'}}>
-            <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
-            <button className="btn btn-secondary">Export CSV</button>
-        </div>
-    );
+    render() {
+console.log(this.props);
+        return <button className="btn btn-secondary" disabled={this.props.rows.length === 0} onClick={this.exportCsv}>Export CSV</button>;
+    }
 };
 
 class App extends React.Component {
@@ -53,7 +52,10 @@ class App extends React.Component {
                         <FilenameLabel filename={this.state.filename} />
                     </div>
 
-                    <WithFileButtons filename={this.state.filename} rows={this.state.rows} />
+                    <div className="pull-xs-right" style={{paddingTop: '6px'}}>
+                        <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
+                        <ExportCsvButton rows={this.state.rows} />
+                    </div>
                 </div>
                 <div className="container-fluid" style={{textAlign: 'center'}}>
                     <Table rows={this.state.rows} />
