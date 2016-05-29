@@ -30,7 +30,7 @@ const fileEl = document.getElementById('sas-file');
 const fileLabelEl = document.getElementById('sas-file-label');
 fileEl.addEventListener('change', () => {
     if (fileEl.files.length > 0) {
-        fileLabelEl.innerHTML = `<span class="alert alert-info" style="padding-top: 13px">${fileEl.value.replace('C:\\fakepath\\', '')}</span>`;
+        fileLabelEl.innerHTML = `<span class="alert alert-info" style="padding-top: 16px; vertical-align: 2px">${fileEl.value.replace('C:\\fakepath\\', '')}</span>`;
 
         const file = fileEl.files[0];
 

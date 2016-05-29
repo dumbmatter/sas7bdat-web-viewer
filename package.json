@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "rm -rf build && mkdir build && cp -r src/index.html build && browserify src/app.js > build/app.js",
+    "build": "rm -rf build && mkdir build && cp src/index.html build && cp -r src/css build/css && browserify src/app.js > build/app.js",
     "watch": "watchify -d src/app.js -o build/app.js"
   },
   "author": "Jeremy Scheff <jdscheff@gmail.com>",
