@@ -14,6 +14,19 @@ const FilenameLabel = props => {
     return <span className="alert alert-info" style={{marginLeft: '0.25em', paddingTop: '16px', verticalAlign: '2px'}}>{props.filename}</span>;
 };
 
+const WithFileButtons = props => {
+    if (props.filename === undefined) {
+        return <div></div>;
+    }
+
+    return (
+        <div className="pull-xs-right" style={{paddingTop: '6px'}}>
+            <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
+            <button className="btn btn-secondary">Export CSV</button>
+        </div>
+    );
+};
+
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -32,13 +45,15 @@ class App extends React.Component {
                 <div className="container" style={{marginTop: '1em'}}>
                     <p><span className="text-danger">Warning: SAS7BDAT Web Viewer is not 100% accurate.</span> Some files, such as those with certain types of compression or character encodings, will fail.</p>
 
-                    <div style={{marginBottom: '1em'}}>
+                    <div className="pull-xs-left" style={{marginBottom: '1em'}}>
                         <label className="btn btn-primary btn-lg" for="sas-file">
                             <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
                             Select SAS7BDAT File
                         </label>
                         <FilenameLabel filename={this.state.filename} />
                     </div>
+
+                    <WithFileButtons filename={this.state.filename} rows={this.state.rows} />
                 </div>
                 <div className="container-fluid" style={{textAlign: 'center'}}>
                     <Table rows={this.state.rows} />
