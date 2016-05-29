@@ -13,17 +13,34 @@ class App extends React.Component {
             rows: []
         };
 
-        emitter.on('new-data', rows => this.setState({rows}));
+        emitter.on('rows', rows => this.setState({rows}));
     }
 
     render() {
-        return <Table rows={this.state.rows} />;
+        return (
+            <div>
+                <div className="container" style={{marginTop: '1em'}}>
+                    <p><span className="text-danger">Warning: SAS7BDAT Web Viewer is not 100% accurate.</span> Some files, such as those with certain types of compression or character encodings, will fail.</p>
+
+                    <div style={{marginBottom: '1em'}}>
+                        <label className="btn btn-primary btn-lg" for="sas-file">
+                            <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
+                            Select SAS7BDAT File
+                        </label>
+                        <span id="sas-file-label" style={{marginLeft: '0.25em'}}></span>
+                    </div>
+                </div>
+                <div className="container-fluid" style={{textAlign: 'center'}}>
+                    <Table rows={this.state.rows} />
+                </div>
+            </div>
+        );
     }
 }
 
 ReactDOM.render(
     <App />,
-    document.getElementById('table-wrapper')
+    document.getElementById('app')
 );
 
 const fileEl = document.getElementById('sas-file');
@@ -38,7 +55,7 @@ fileEl.addEventListener('change', () => {
         reader.readAsArrayBuffer(file);
         reader.onload = event => {
             SAS7BDAT.parse(event.target.result)
-                .then(rows => emitter.emit('new-data', rows))
+                .then(rows => emitter.emit('rows', rows))
                 .catch(err => console.log(err));
         };
     }

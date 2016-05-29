@@ -20,7 +20,7 @@
         <a class="navbar-brand" href="#">SAS7BDAT Web Viewer</a>
         <ul class="nav navbar-nav pull-xs-right">
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/dumbmatter/sas7bdat-web">
+            <a class="nav-link" href="https://github.com/dumbmatter/sas7bdat-web-viewer">
               <span class="hidden-xs-down">View on GitHub</span>
               <span class="octicon octicon-mark-github" aria-hidden="true"></span>
             </a>
@@ -29,23 +29,7 @@
       </div>
     </nav>
 
-    <div class="container" style="margin-top: 1em">
-      <p><span class="text-danger">Warning: SAS7BDAT Web Viewer is not 100% accurate.</span> Some files, such as those with certain types of compression or character encodings, will fail.</p>
-
-      <div style="margin-bottom: 1em">
-        <label class="btn btn-primary btn-lg" for="sas-file">
-          <input id="sas-file" accept=".sas7bdat" type="file" style="display:none;">
-          Select SAS7BDAT File
-        </label>
-        <span id="sas-file-label"></span>
-      </div>
-    </div>
-
-    <div class="container-fluid">
-      <center>
-        <div id="table-wrapper"></div>
-      </center>
-    </div>
+    <div id="app"></div>
 
     <script src="app.js"></script>
   </body>
