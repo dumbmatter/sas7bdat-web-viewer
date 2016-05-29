@@ -1,3 +1,12 @@
-Don't read whole file if it's huge
-
 somehow combine back with sas7bdat-js
+
+Don't read whole file if it's huge
+- if not possible, maybe don't render whole file if it's huge
+
+show header info
+
+parsing in web worker, with progress bar
+
+react prod mode
+
+display errors/warnings

@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "babel-runtime": "^6.9.0",
+    "csv-stringify": "^1.0.4",
     "denodeify": "^1.2.1",
     "react": "^15.1.0",
     "react-dom": "^15.1.0"

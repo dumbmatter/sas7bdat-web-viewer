@@ -1,22 +1,30 @@
+const csvStringify = require('csv-stringify');
 const denodeify = require('denodeify');
 const path = require('path');
 const stream = require('stream');
 
-let pos = 0;
-const fs_read_async = (file, offset, length, position) => {
-    const slice = file.slice(offset + pos, length + pos);
+const open_file = () => {
+    throw new Error('open_file not implemented');
+};
+
+const read_file = (sas7bdat, offset, length) => {
+    const slice = sas7bdat._file.slice(offset + sas7bdat.file_pos, length + sas7bdat.file_pos);
     const buffer = Buffer.from(slice);
 
     const bytesRead = Math.min(slice.byteLength, buffer.length);
 
-    pos += slice.byteLength;
+    sas7bdat.file_pos += slice.byteLength;
 
     return {buffer, bytesRead};
 };
 
-const fs_seek_async = () => {
-    throw new NotImplementedError();
+const close_file = sas7bdat => {
+    sas7bdat._file = null;
 };
+
+const seek_file = () => {
+    throw new Error('seek not implemented');
+}
 
 class NotImplementedError extends Error {
     constructor(message) {
@@ -442,6 +450,7 @@ throw new NotImplementedError();
     }*/
 }
 
+// file can be string file path (NodeJS) or ArrayBuffer (client-side)
 class SAS7BDAT {
     constructor(file, {logLevel = 'warning', extraTimeFormatStrings = null, extraDatetimeFormatStrings = null, extraDateFormatStrings = null, skipHeader = false, encoding = 'utf8', alignCorrection = true, dateFormatter = null, rowFormat = 'array'} = {}) {
         this.RLE_COMPRESSION = 'SASYZCRL';
@@ -457,7 +466,7 @@ class SAS7BDAT {
         this.DATE_TIME_FORMAT_STRINGS = ['DATETIME'];
         this.DATE_FORMAT_STRINGS = ['YYMMDD', 'MMDDYY', 'DDMMYY', 'DATE', 'JULIAN', 'MONYY', 'WEEKDATE'];
 
-        this.path = path;
+        this.path = typeof file === 'string' ? file : null;
         this.endianess = null;
         this.u64 = false;
         this.logger = this._make_logger(logLevel);
@@ -469,7 +478,7 @@ class SAS7BDAT {
         this.align_correction = alignCorrection;
         this.date_formatter = dateFormatter;
         this.row_format = rowFormat;
-        this._file = file;
+        this._file = typeof file === 'string' ? null : file;
         this.cached_page = null;
         this.current_page_type = null;
         this.current_page_block_count = null;
@@ -489,12 +498,14 @@ class SAS7BDAT {
         this.sent_header = false;
         this.current_row_in_file_index = 0;
         this.current_row_on_page_index = 0;
-
-        pos = 0;
+        this.file_pos = 0;
     }
 
     async parse_header() {
         this.logger.debug('Start parse_header');
+        if (this._file === null) {
+            this._file = await open_file(this.path, 'r');
+        }
         this.header = new SASHeader(this);
         await this.header.parse();
         this.properties = this.header.properties;
@@ -517,7 +528,7 @@ class SAS7BDAT {
     }
 
     async close() {
-        this._file = null;
+        await close_file(this);
     }
 
     _make_logger(level = 'info') {
@@ -554,9 +565,9 @@ class SAS7BDAT {
                 while (skipped < (offset - this.current_file_position)) {
                     const seek = offset - this.current_file_position - skipped;
                     skipped += seek;
-                    fs_seek_async(this._file, seek, 0);
+                    await seek_file(this, seek);
                 }
-                const {buffer: tmp} = await fs_read_async(this._file, 0, length, null);
+                const {buffer: tmp} = await read_file(this, 0, length);
                 if (tmp.length < length) {
                     throw new Error(`failed to read ${length} bytes from sas7bdat file`);
                 }
@@ -666,7 +677,7 @@ class SAS7BDAT {
             return this.column_names_strings_decoded;
         }
         if (!this.cached_page) {
-            await fs_seek_async(this._file, this.properties.header_length, 0);
+            await seek_file(this, this.properties.header_length);
             await this._read_next_page();
         }
         if (this.current_row_in_file_index < row_count) {
@@ -754,11 +765,11 @@ class SAS7BDAT {
 
     async _read_next_page() {
         this.current_page_data_subheader_pointers = [];
-        const {buffer: cached_page, bytesRead} = await fs_read_async(this._file, 0, this.properties.page_length, null);
+        const {buffer: cached_page, bytesRead} = await read_file(this, 0, this.properties.page_length);
+        this.cached_page = cached_page;
         if (bytesRead <= 0) {
             return;
         }
-        this.cached_page = cached_page;
 
         if (this.cached_page.length !== this.properties.page_length) {
             throw new Error(`failed to read complete page from file (read ${this.cached_page.length} of ${this.properties.page_length} bytes)`);
@@ -1390,7 +1401,7 @@ class SASHeader {
 
     async parse() {
         // Check magic number
-        let {buffer: h} = await fs_read_async(this.parent._file, 0, 288, null);
+        let {buffer: h} = await read_file(this.parent, 0, 288);
         this.parent.cached_page = h;
         if (h.length < 288) {
             throw new Error('header too short (not a sas7bdat file?)');
@@ -1477,7 +1488,7 @@ class SASHeader {
             this.parent.logger.warning(`header length ${this.properties.header_length} !== 8192`);
         }
 
-        const {buffer: tmp} = await fs_read_async(this.parent._file, 0, this.properties.header_length - 288, null);
+        const {buffer: tmp} = await read_file(this.parent, 0, this.properties.header_length - 288);
         this.parent.cached_page = Buffer.concat([this.parent.cached_page, tmp]);
         h = this.parent.cached_page;
         if (h.length !== this.properties.header_length) {
@@ -1532,7 +1543,7 @@ class SASHeader {
     async parse_metadata() {
         let done = false;
         while (!done) {
-            const {buffer: cached_page} = await fs_read_async(this.parent._file, 0, this.properties.page_length, null);
+            const {buffer: cached_page} = await read_file(this.parent, 0, this.properties.page_length);
             this.parent.cached_page = cached_page;
             if (this.parent.cached_page.length <= 0) {
                 break;
@@ -1661,4 +1672,38 @@ SAS7BDAT.parse = (filename, options) => {
     });
 };
 
+SAS7BDAT.toCsv = (sasFilename, csvFilename, {sasOptions, csvOptions}) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const stream = SAS7BDAT.createReadStream(sasFilename, sasOptions);
+            stream.on('error', err => reject(err));
+
+            const stringifier = csvStringify(csvOptions);
+            stringifier.on('error', err => reject(err));
+
+            const writeStream = fs.createWriteStream(csvFilename);
+            writeStream.on('error', err => reject(err));
+            writeStream.on('finish', () => resolve());
+
+            stream
+                .pipe(stringifier)
+                .pipe(writeStream);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 module.exports = SAS7BDAT;
+
+/*SAS7BDAT.parse('test/data/sas7bdat/sv.sas7bdat')
+    .then(rows => console.log(rows[1]))
+    .catch(err => console.log(err));
+
+SAS7BDAT.toCsv('test/data/sas7bdat/sv.sas7bdat', 'test.csv', {
+        csvOptions: {
+            quotedEmpty: false,
+            quotedString: true
+        }
+    })
+    .catch(err => console.log(err));*/
