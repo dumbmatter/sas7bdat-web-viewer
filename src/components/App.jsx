@@ -31,6 +31,15 @@ class App extends React.Component {
                 this.setState({status: this.state.status.concat(status)});
             }
         });
+
+        this.worker = new Worker('worker.js');
+        this.worker.addEventListener('message', e => {
+            if (e.data.type === 'emit') {
+                this.emitter.emit(...e.data.value);
+            } else {
+                console.log(e.data);
+            }
+        });
     }
 
     handleFileChange(e) {
@@ -47,32 +56,7 @@ class App extends React.Component {
             this.emitter.emit('state', {filename});
 
             const file = e.target.files[0];
-
-            // setTimeouts are to let status display
-            setTimeout(() => {
-                const reader = new window.FileReader();
-                reader.readAsArrayBuffer(file);
-                reader.onload = event => {
-                    this.emitter.emit('status', 'Parsing file...');
-                    parseSas7bdat(event.target.result)
-                        .then(result => {
-                            this.emitter.emit('status', 'Rendering table...');
-                            setTimeout(() => {
-                                this.emitter.emit('state', result);
-                                this.emitter.emit('status', 'Done!');
-                            }, 0);
-                        })
-                        .catch(err => {
-                            this.emitter.emit('state', {
-                                error: {
-                                    message: err.message,
-                                    type: 'Parsing error',
-                                },
-                            });
-                            this.emitter.emit('status', 'Done!');
-                        });
-                };
-            }, 0);
+            this.worker.postMessage(file);
         }
     }
 

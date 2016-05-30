@@ -1,5 +1,8 @@
 parsing in web worker
   csv export too?
+  bundle
+    https://github.com/substack/webworkify
+    https://github.com/shama/workerify
 
 error handling
   show filename as danger

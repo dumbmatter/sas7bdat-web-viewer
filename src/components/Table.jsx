@@ -77,7 +77,7 @@ class Table extends React.Component {
             overflowMessage = (
                 <div className="container">
                     <div className="alert alert-warning">
-                        <b>Warning:</b> Table truncaded after {MAX_ROWS} rows – if you want to see
+                        <b>Warning:</b> Table truncated after {MAX_ROWS} rows – if you want to see
                         more, export it as a CSV file and open it in Excel or LibreOffice.
                     </div>
                 </div>
