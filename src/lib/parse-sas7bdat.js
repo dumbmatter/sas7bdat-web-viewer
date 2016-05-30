@@ -32,6 +32,7 @@ const parseSas7bdat = file => {
         const stream = sas7bdat.create_read_stream();
         stream.on('data', row => rows.push(row));
         stream.on('end', () => resolve({
+            info: sas7bdat.properties,
             rows
         }));
         stream.on('error', err => reject(err));

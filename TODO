@@ -5,9 +5,11 @@ Don't read whole file if it's huge
 
 show header info
 
-parsing in web worker
+react property attribute indenting
 
 progress bar or status updates for parsing
+
+parsing in web worker
 
 error handling
   display errors/warnings

@@ -1,3 +1,4 @@
+const classNames = require('classnames');
 const EventEmitter = require('events').EventEmitter;
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -13,12 +14,30 @@ const FilenameLabel = props => {
     return <span className="alert alert-info" style={{marginLeft: '0.25em', paddingTop: '16px', verticalAlign: '2px'}}>{props.filename}</span>;
 };
 
+const FileInfoButton = props => {
+    const classes = ['btn', 'btn-secondary'];
+    if (props.infoVisible) {
+        classes.push('active');
+    }
+
+    return <button className={classNames(classes)} disabled={props.filename === undefined} onClick={props.onClick} style={{marginRight: '0.25em'}}>File Info</button>;
+}
+
+const FileInfo = props => {
+    if (!props.infoVisible) {
+        return <div></div>;
+    }
+
+    return <div><pre>{JSON.stringify(props.info, null, 2)}</pre></div>;
+}
+
 class App extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             filename: undefined,
             rows: [],
+            infoVisible: false,
         };
 
         this.emitter = new EventEmitter();
@@ -44,6 +63,11 @@ class App extends React.Component {
         }
     }
 
+    toggleFileInfoVisibile() {
+console.log('toggleFileInfoVisibile')
+        this.setState({infoVisible: !this.state.infoVisible});
+    }
+
     render() {
         return (
             <div>
@@ -60,7 +84,7 @@ class App extends React.Component {
                         </div>
                     </div>
 
-                    <div className="pull-xs-left" style={{marginBottom: '1em'}}>
+                    <div className="pull-xs-left">
                         <label className="btn btn-primary btn-lg" for="sas-file">
                             <input accept=".sas7bdat" type="file" style={{display: 'none'}} onChange={this.handleFileChange.bind(this)} />
                             Select SAS7BDAT File
@@ -69,9 +93,12 @@ class App extends React.Component {
                     </div>
 
                     <div className="pull-xs-right" style={{paddingTop: '6px'}}>
-                        <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
+                        <FileInfoButton filename={this.state.filename} infoVisible={this.state.infoVisible} onClick={this.toggleFileInfoVisibile.bind(this)} />
                         <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
                     </div>
+
+                    <div className="clearfix"></div>
+                    <FileInfo infoVisible={this.state.infoVisible} info={this.state.info} />
                 </div>
                 <div className="container-fluid">
                     <center>
