@@ -10,20 +10,29 @@ const parseSas7bdat = require('../lib/parse-sas7bdat');
 class App extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             filename: undefined,
             info: undefined,
             infoVisible: false,
             rows: [],
+            status: '',
         };
 
         this.emitter = new EventEmitter();
         this.emitter.on('filename', filename => this.setState({filename}));
         this.emitter.on('file-contents', result => this.setState(result));
+        this.emitter.on('status', status => {
+            console.log(status);
+            this.setState({status})
+        });
     }
 
     handleFileChange(e) {
         if (e.target.files.length > 0) {
+            this.emitter.emit('file-contents', {filename: undefined, rows: []});
+            this.emitter.emit('status', 'Reading file...');
+
             // http://stackoverflow.com/q/4851595/786644
             const filename = e.target.value.replace('C:\\fakepath\\', '');
             this.emitter.emit('filename', filename);
@@ -33,11 +42,14 @@ class App extends React.Component {
             const reader = new window.FileReader();
             reader.readAsArrayBuffer(file);
             reader.onload = event => {
+                this.emitter.emit('status', 'Parsing file...');
                 parseSas7bdat(event.target.result)
-                    .then(result => this.emitter.emit('file-contents', result))
-                    .catch(err => {
-                        throw err;
-                    });
+                    .then(result => {
+                        this.emitter.emit('status', 'Rendering table...');
+                        this.emitter.emit('file-contents', result);
+                        this.emitter.emit('status', 'Done!');
+                    })
+                    .catch(err => { throw err; });
             };
         }
     }
