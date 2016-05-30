@@ -31,19 +31,31 @@ class App extends React.Component {
         return (
             <div>
                 <div className="container" style={{marginTop: '1em'}}>
-                    <p><span className="text-danger">Warning: SAS7BDAT Web Viewer is not 100% accurate.</span> Some files, such as those with certain types of compression or character encodings, will fail.</p>
-
-                    <div className="pull-xs-left" style={{marginBottom: '1em'}}>
-                        <label className="btn btn-primary btn-lg" for="sas-file">
-                            <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
-                            Select SAS7BDAT File
-                        </label>
-                        <FilenameLabel filename={this.state.filename} />
+                    <div className="row">
+                        <div className="col-md-4">
+                            <p>Here you can view SAS7BDAT files right in your browser, or convert them to CSV files which you can open in Excel and many other programs.</p>
+                        </div>
+                        <div className="col-md-4">
+                            <p><span className="text-danger">SAS7BDAT Web Viewer is not 100% accurate.</span> Some files, such as those with certain types of compression or character encodings, will fail.</p>
+                        </div>
+                        <div className="col-md-4">
+                            <p><span className="text-success">Your data will not leave your computer.</span> Processing is done client-side on your computer, nothing is sent to any remote server.</p>
+                        </div>
                     </div>
 
-                    <div className="pull-xs-right" style={{paddingTop: '6px'}}>
-                        <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
-                        <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
+                    <div style={{marginBottom: '1em'}}>
+                        <div className="pull-xs-left">
+                            <label className="btn btn-primary btn-lg" for="sas-file">
+                                <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
+                                Select SAS7BDAT File
+                            </label>
+                            <FilenameLabel filename={this.state.filename} />
+                        </div>
+
+                        <div className="pull-xs-right" style={{paddingTop: '6px'}}>
+                            <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
+                            <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
+                        </div>
                     </div>
                 </div>
                 <div className="container-fluid">
