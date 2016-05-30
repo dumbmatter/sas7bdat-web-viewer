@@ -25,4 +25,17 @@ const seek_file = () => {
 
 const SAS7BDAT = sas7bdatFactory({open_file, read_file, seek_file, close_file});
 
-module.exports = SAS7BDAT;
+const parseSas7bdat = file => {
+    return new Promise((resolve, reject) => {
+        const rows = [];
+        const sas7bdat = new SAS7BDAT(file);
+        const stream = sas7bdat.create_read_stream();
+        stream.on('data', row => rows.push(row));
+        stream.on('end', () => resolve({
+            rows
+        }));
+        stream.on('error', err => reject(err));
+    });
+}
+
+module.exports = parseSas7bdat;

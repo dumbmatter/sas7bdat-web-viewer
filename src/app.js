@@ -1,9 +1,9 @@
 const EventEmitter = require('events').EventEmitter;
 const React = require('react');
 const ReactDOM = require('react-dom');
-const SAS7BDAT = require('./sas7bdat');
 const ExportCsvButton = require('./components/export-csv-button');
 const Table = require('./components/table');
+const parseSas7bdat = require('./lib/parse-sas7bdat');
 
 const FilenameLabel = props => {
     if (props.filename === undefined) {
@@ -23,7 +23,7 @@ class App extends React.Component {
 
         this.emitter = new EventEmitter();
         this.emitter.on('filename', filename => this.setState({filename}));
-        this.emitter.on('rows', rows => this.setState({rows}));
+        this.emitter.on('file-contents', result => this.setState(result));
     }
 
     handleFileChange(e) {
@@ -37,8 +37,8 @@ class App extends React.Component {
             const reader = new window.FileReader();
             reader.readAsArrayBuffer(file);
             reader.onload = event => {
-                SAS7BDAT.parse(event.target.result)
-                    .then(rows => this.emitter.emit('rows', rows))
+                parseSas7bdat(event.target.result)
+                    .then(result => this.emitter.emit('file-contents', result))
                     .catch(err => console.log(err));
             };
         }
