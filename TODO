@@ -3,20 +3,21 @@ Don't read whole file if it's huge
     http://stackoverflow.com/q/25810051/786644
     http://stackoverflow.com/a/14842739/786644
 
-react property attribute indenting
-
-airbnb style guide for component file names
-
-eslint
-
 progress bar or status updates for parsing
 
 parsing in web worker
+  csv export too?
 
 error handling
   display errors/warnings
   show filename as danger
   csv errors
+
+tests
+  react components
+  parsing
+  csv export
+  integration
 
 responsive
 

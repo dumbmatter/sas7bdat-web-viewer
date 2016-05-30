@@ -9,7 +9,6 @@
         "indent": ["error", 4],
         "object-curly-spacing": ["error", "never"],
         "react/jsx-indent": ["error", 4],
-        "react/jsx-indent-props": ["error", 4],
-        "react/jsx-no-bind": "off"
+        "react/jsx-indent-props": ["error", 4]
     }
 }

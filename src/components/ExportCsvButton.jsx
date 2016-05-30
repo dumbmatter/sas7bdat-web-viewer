@@ -46,7 +46,7 @@ const ExportCsvButton = props => {
         <button
             className="btn btn-secondary"
             disabled={props.rows.length === 0}
-            onClick={exportCsv.bind(null, filename, props.rows)}
+            onClick={() => exportCsv(filename, props.rows)}
         >
             Export CSV
         </button>

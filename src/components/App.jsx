@@ -81,7 +81,7 @@ class App extends React.Component {
                                 accept=".sas7bdat"
                                 type="file"
                                 style={{display: 'none'}}
-                                onChange={this.handleFileChange.bind(this)}
+                                onChange={e => this.handleFileChange(e)}
                             />
                             Select SAS7BDAT File
                         </label>
@@ -92,7 +92,7 @@ class App extends React.Component {
                         <FileInfoButton
                             filename={this.state.filename}
                             infoVisible={this.state.infoVisible}
-                            onClick={this.toggleFileInfoVisibile.bind(this)}
+                            onClick={() => this.toggleFileInfoVisibile()}
                         />
                         <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
                     </div>
