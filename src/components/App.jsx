@@ -1,6 +1,7 @@
 const EventEmitter = require('events').EventEmitter;
 const React = require('react');
 const ExportCsvButton = require('./ExportCsvButton.jsx');
+const ErrorAlert = require('./ErrorAlert.jsx');
 const FileInfo = require('./FileInfo.jsx');
 const FileInfoButton = require('./FileInfoButton.jsx');
 const FilenameLabel = require('./FilenameLabel.jsx');
@@ -13,6 +14,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
+            error: undefined,
             filename: undefined,
             info: undefined,
             infoVisible: false,
@@ -35,6 +37,7 @@ class App extends React.Component {
         if (e.target.files.length > 0) {
             this.emitter.emit('status', 'Reading file...');
             this.emitter.emit('state', {
+                error: undefined,
                 filename: undefined,
                 rows: [],
             });
@@ -59,7 +62,15 @@ class App extends React.Component {
                                 this.emitter.emit('status', 'Done!');
                             }, 0);
                         })
-                        .catch(err => { throw err; });
+                        .catch(err => {
+                            this.emitter.emit('state', {
+                                error: {
+                                    message: err.message,
+                                    type: 'Parsing error',
+                                },
+                            });
+                            this.emitter.emit('status', 'Done!');
+                        });
                 };
             }, 0);
         }
@@ -113,7 +124,7 @@ class App extends React.Component {
 
                     <div className="pull-xs-right" style={{paddingTop: '6px'}}>
                         <FileInfoButton
-                            filename={this.state.filename}
+                            info={this.state.info}
                             infoVisible={this.state.infoVisible}
                             onClick={() => this.toggleFileInfoVisibile()}
                         />
@@ -121,6 +132,7 @@ class App extends React.Component {
                     </div>
 
                     <div className="clearfix" style={{marginBottom: '0.5em'}} />
+                    <ErrorAlert error={this.state.error} />
                     <FileInfo infoVisible={this.state.infoVisible} info={this.state.info} />
                 </div>
                 <div className="container-fluid">

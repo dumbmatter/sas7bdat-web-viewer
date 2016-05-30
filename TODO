@@ -2,7 +2,6 @@ parsing in web worker
   csv export too?
 
 error handling
-  display errors/warnings
   show filename as danger
   csv errors
 

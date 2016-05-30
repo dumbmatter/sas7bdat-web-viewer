@@ -10,7 +10,7 @@ const FileInfoButton = props => {
     return (
         <button
             className={classNames(classes)}
-            disabled={props.filename === undefined}
+            disabled={props.info === undefined}
             onClick={props.onClick}
             style={{marginRight: '0.25em'}}
         >
@@ -20,7 +20,7 @@ const FileInfoButton = props => {
 };
 
 FileInfoButton.propTypes = {
-    filename: React.PropTypes.string,
+    info: React.PropTypes.object,
     infoVisible: React.PropTypes.bool.isRequired,
     onClick: React.PropTypes.func.isRequired,
 };
