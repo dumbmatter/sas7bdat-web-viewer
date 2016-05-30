@@ -19,7 +19,7 @@ const toString = x => {
 
 const FileInfo = props => {
     if (!props.infoVisible || props.info === undefined) {
-        return <div></div>;
+        return null;
     }
 
     const infos = Object.keys(props.info)

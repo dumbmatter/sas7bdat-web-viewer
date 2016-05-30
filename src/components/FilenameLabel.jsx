@@ -2,7 +2,7 @@ const React = require('react');
 
 const FilenameLabel = props => {
     if (props.filename === undefined) {
-        return <span></span>;
+        return null;
     }
 
     return <span className="alert alert-info filename-label">{props.filename}</span>;

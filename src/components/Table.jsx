@@ -64,7 +64,7 @@ class Table extends React.Component {
 
     render() {
         if (this.props.rows.length === 0) {
-            return <div></div>;
+            return null;
         }
 
         const colNames = this.props.rows[0];

@@ -4,6 +4,7 @@ const ExportCsvButton = require('./ExportCsvButton.jsx');
 const FileInfo = require('./FileInfo.jsx');
 const FileInfoButton = require('./FileInfoButton.jsx');
 const FilenameLabel = require('./FilenameLabel.jsx');
+const Status = require('./Status.jsx');
 const Table = require('./Table.jsx');
 const parseSas7bdat = require('../lib/parse-sas7bdat');
 
@@ -16,39 +17,45 @@ class App extends React.Component {
             info: undefined,
             infoVisible: false,
             rows: [],
-            status: '',
+            status: [],
         };
 
         this.emitter = new EventEmitter();
-        this.emitter.on('set-state', obj => {
-            if (obj.status) { console.log(obj.status); }
-            this.setState(obj)
+        this.emitter.on('state', state => this.setState(state));
+        this.emitter.on('status', status => {
+            if (status === 'Done!') {
+                this.setState({status: []});
+            } else {
+                this.setState({status: this.state.status.concat(status)});
+            }
         });
     }
 
     handleFileChange(e) {
         if (e.target.files.length > 0) {
-            this.emitter.emit('set-state', {status: 'Reading file...'});
-            this.emitter.emit('set-state', {
+            this.emitter.emit('status', 'Reading file...');
+            this.emitter.emit('state', {
                 filename: undefined,
                 rows: [],
             });
 
             // http://stackoverflow.com/q/4851595/786644
             const filename = e.target.value.replace('C:\\fakepath\\', '');
-            this.emitter.emit('set-state', {filename});
+            this.emitter.emit('state', {filename});
 
             const file = e.target.files[0];
 
             const reader = new window.FileReader();
             reader.readAsArrayBuffer(file);
             reader.onload = event => {
-                this.emitter.emit('set-state', {status: 'Parsing file...'});
+                this.emitter.emit('status', 'Parsing file...');
                 parseSas7bdat(event.target.result)
                     .then(result => {
-                        this.emitter.emit('set-state', {status: 'Rendering table...'});
-                        this.emitter.emit('set-state', result);
-                        this.emitter.emit('set-state', {status: 'Done!'});
+                        this.emitter.emit('status', 'Rendering table...');
+                        setTimeout(() => {
+                            this.emitter.emit('state', result);
+                            this.emitter.emit('status', 'Done!');
+                        }, 0);
                     })
                     .catch(err => { throw err; });
             };
@@ -115,6 +122,7 @@ class App extends React.Component {
                 </div>
                 <div className="container-fluid">
                     <center>
+                        <Status status={this.state.status} />
                         <Table rows={this.state.rows} />
                     </center>
                 </div>
