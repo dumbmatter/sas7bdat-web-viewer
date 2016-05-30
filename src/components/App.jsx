@@ -45,20 +45,23 @@ class App extends React.Component {
 
             const file = e.target.files[0];
 
-            const reader = new window.FileReader();
-            reader.readAsArrayBuffer(file);
-            reader.onload = event => {
-                this.emitter.emit('status', 'Parsing file...');
-                parseSas7bdat(event.target.result)
-                    .then(result => {
-                        this.emitter.emit('status', 'Rendering table...');
-                        setTimeout(() => {
-                            this.emitter.emit('state', result);
-                            this.emitter.emit('status', 'Done!');
-                        }, 0);
-                    })
-                    .catch(err => { throw err; });
-            };
+            // setTimeouts are to let status display
+            setTimeout(() => {
+                const reader = new window.FileReader();
+                reader.readAsArrayBuffer(file);
+                reader.onload = event => {
+                    this.emitter.emit('status', 'Parsing file...');
+                    parseSas7bdat(event.target.result)
+                        .then(result => {
+                            this.emitter.emit('status', 'Rendering table...');
+                            setTimeout(() => {
+                                this.emitter.emit('state', result);
+                                this.emitter.emit('status', 'Done!');
+                            }, 0);
+                        })
+                        .catch(err => { throw err; });
+                };
+            }, 0);
         }
     }
 
