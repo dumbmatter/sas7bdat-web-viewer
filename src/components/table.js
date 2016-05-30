@@ -2,30 +2,9 @@ const React = require('react');
 
 // Everything except render() is for sticky columns
 class Table extends React.Component {
-    getTableFixedLeft() {
-        return this.tableRef.offsetLeft - document.body.scrollLeft;
-    }
-
-    checkFixedHeaderVisibility() {
-        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        this.tableFixedRef.style.display = scrollTop > this.tableRef.offsetTop ? 'table' : 'none';
-    }
-
-    handleResizeScroll() {
-        if (this.tableFixedRef) {
-            this.checkFixedHeaderVisibility();
-            this.tableFixedRef.style.left = `${this.getTableFixedLeft()}px`;
-        }
-    }
-
     componentDidMount() {
         window.addEventListener('resize', this.handleResizeScroll.bind(this));
         window.addEventListener('scroll', this.handleResizeScroll.bind(this));
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('resize', this.handleResizeScroll.bind(this));
-        window.removeEventListener('scroll', this.handleResizeScroll.bind(this));
     }
 
     componentDidUpdate() {
@@ -61,16 +40,37 @@ class Table extends React.Component {
         }
     }
 
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handleResizeScroll.bind(this));
+        window.removeEventListener('scroll', this.handleResizeScroll.bind(this));
+    }
+
+    getTableFixedLeft() {
+        return this.tableRef.offsetLeft - document.body.scrollLeft;
+    }
+
+    checkFixedHeaderVisibility() {
+        const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        this.tableFixedRef.style.display = scrollTop > this.tableRef.offsetTop ? 'table' : 'none';
+    }
+
+    handleResizeScroll() {
+        if (this.tableFixedRef) {
+            this.checkFixedHeaderVisibility();
+            this.tableFixedRef.style.left = `${this.getTableFixedLeft()}px`;
+        }
+    }
+
     render() {
         if (this.props.rows.length === 0) {
             return <div></div>;
         }
 
         const colNames = this.props.rows[0];
-        const rows = this.props.rows.slice(1)
+        const rows = this.props.rows.slice(1);
 
         return (
-            <table ref={ref => this.tableRef = ref} className="table table-bordered table-hover table-sm table-sas7bdat">
+            <table ref={ref => { this.tableRef = ref; }} className="table table-bordered table-hover table-sm table-sas7bdat">
                 <thead>
                     <tr>
                         {colNames.map((field, j) => <th key={j}>{field}</th>)}
@@ -86,6 +86,6 @@ class Table extends React.Component {
             </table>
         );
     }
-};
+}
 
 module.exports = Table;
