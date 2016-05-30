@@ -39,7 +39,7 @@ class App extends React.Component {
                             <p><span className="text-danger">SAS7BDAT Web Viewer is not 100% accurate.</span> Some files, such as those with certain types of compression or character encodings, will fail.</p>
                         </div>
                         <div className="col-md-4">
-                            <p><span className="text-success">Your data will not leave your computer.</span> Processing is done client-side on your computer, nothing is sent to any remote server.</p>
+                            <p><span className="text-success">Your data will not leave your computer.</span> Processing is done client-side on your machine, nothing is sent to any remote server.</p>
                         </div>
                     </div>
 

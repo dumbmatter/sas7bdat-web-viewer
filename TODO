@@ -2,16 +2,11 @@ Don't read whole file if it's huge
   incremental reading possible, like in node?
   if not possible, maybe don't render whole file if it's huge
 
-sticky table header
-  https://facebook.github.io/fixed-data-table/ - no, can't auto figure out column sizes
-  https://github.com/jmosbech/StickyTableHeaders
-  https://github.com/kingkool68/stickyHeader
-  https://css-tricks.com/persistent-headers/
-  others, didn't look much
-
 show header info
 
-parsing in web worker, with progress bar
+parsing in web worker
+
+progress bar or status updates for parsing
 
 react prod mode
 
