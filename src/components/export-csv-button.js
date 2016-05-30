@@ -27,7 +27,6 @@ const exportCsv = (filename, rows) => {
     csvStringify(rows, (err, output) => {
         if (err) { throw err; }
 
-        console.log(filename, output);
         downloadFile(filename, output);
     });
 };
