@@ -20,34 +20,35 @@ class App extends React.Component {
         };
 
         this.emitter = new EventEmitter();
-        this.emitter.on('filename', filename => this.setState({filename}));
-        this.emitter.on('file-contents', result => this.setState(result));
-        this.emitter.on('status', status => {
-            console.log(status);
-            this.setState({status})
+        this.emitter.on('set-state', obj => {
+            if (obj.status) { console.log(obj.status); }
+            this.setState(obj)
         });
     }
 
     handleFileChange(e) {
         if (e.target.files.length > 0) {
-            this.emitter.emit('file-contents', {filename: undefined, rows: []});
-            this.emitter.emit('status', 'Reading file...');
+            this.emitter.emit('set-state', {status: 'Reading file...'});
+            this.emitter.emit('set-state', {
+                filename: undefined,
+                rows: [],
+            });
 
             // http://stackoverflow.com/q/4851595/786644
             const filename = e.target.value.replace('C:\\fakepath\\', '');
-            this.emitter.emit('filename', filename);
+            this.emitter.emit('set-state', {filename});
 
             const file = e.target.files[0];
 
             const reader = new window.FileReader();
             reader.readAsArrayBuffer(file);
             reader.onload = event => {
-                this.emitter.emit('status', 'Parsing file...');
+                this.emitter.emit('set-state', {status: 'Parsing file...'});
                 parseSas7bdat(event.target.result)
                     .then(result => {
-                        this.emitter.emit('status', 'Rendering table...');
-                        this.emitter.emit('file-contents', result);
-                        this.emitter.emit('status', 'Done!');
+                        this.emitter.emit('set-state', {status: 'Rendering table...'});
+                        this.emitter.emit('set-state', result);
+                        this.emitter.emit('set-state', {status: 'Done!'});
                     })
                     .catch(err => { throw err; });
             };

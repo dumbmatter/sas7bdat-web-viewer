@@ -3,8 +3,6 @@ Don't read whole file if it's huge
     http://stackoverflow.com/q/25810051/786644
     http://stackoverflow.com/a/14842739/786644
 
-merge together emits
-
 if load big file and then small file, small file is much slower
 
 progress bar or status updates for parsing
