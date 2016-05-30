@@ -88,4 +88,8 @@ class Table extends React.Component {
     }
 }
 
+Table.propTypes = {
+    rows: React.PropTypes.arrayOf(React.PropTypes.array).isRequired,
+};
+
 module.exports = Table;

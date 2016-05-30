@@ -44,4 +44,9 @@ const ExportCsvButton = props => {
     return <button className="btn btn-secondary" disabled={props.rows.length === 0} onClick={exportCsv.bind(null, filename, props.rows)}>Export CSV</button>;
 };
 
+ExportCsvButton.propTypes = {
+    filename: React.PropTypes.string,
+    rows: React.PropTypes.arrayOf(React.PropTypes.array).isRequired,
+};
+
 module.exports = ExportCsvButton;

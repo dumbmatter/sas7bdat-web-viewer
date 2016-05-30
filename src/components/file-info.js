@@ -69,4 +69,9 @@ const FileInfo = props => {
     );
 };
 
+FileInfo.propTypes = {
+    info: React.PropTypes.object,
+    infoVisible: React.PropTypes.bool.isRequired,
+};
+
 module.exports = FileInfo;
