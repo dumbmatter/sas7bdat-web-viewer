@@ -68,26 +68,46 @@ class Table extends React.Component {
         }
 
         const colNames = this.props.rows[0];
-        const rows = this.props.rows.slice(1);
+
+        const MAX_ROWS = 1000;
+        const rows = this.props.rows.slice(1, MAX_ROWS);
+
+        let overflowMessage = null;
+        if (this.props.rows.length - 1 > MAX_ROWS) {
+            overflowMessage = (
+                <div className="container">
+                    <div className="alert alert-danger" role="alert">
+                        <b>Warning:</b> Table truncaded after {MAX_ROWS} rows – if you want to see
+                        more, export it as a CSV file and open it in Excel or LibreOffice.
+                    </div>
+                </div>
+            );
+        }
 
         return (
-            <table
-                ref={ref => { this.tableRef = ref; }}
-                className="table table-bordered table-hover table-sm table-sas7bdat"
-            >
-                <thead>
-                    <tr>
-                        {colNames.map((field, j) => <th key={j}>{field}</th>)}
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows.map((row, i) => (
-                        <tr key={i}>
-                            {row.map((field, j) => <td key={j}>{field}</td>)}
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+            <div>
+                {overflowMessage}
+                <center>
+                    <table
+                        ref={ref => { this.tableRef = ref; }}
+                        className="table table-bordered table-hover table-sm table-sas7bdat"
+                    >
+                        <thead>
+                            <tr>
+                                {colNames.map((field, j) => <th key={j}>{field}</th>)}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows.map((row, i) => (
+                                <tr key={i}>
+                                    {row.map((field, j) => <td key={j}>{field}</td>)}
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </center>
+                {overflowMessage}
+            </div>
         );
     }
 }

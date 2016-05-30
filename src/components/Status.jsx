@@ -1,7 +1,6 @@
 const React = require('react');
 
 const Status = props => {
-console.log(props.status);
     if (props.status.length === 0) {
         return null;
     }

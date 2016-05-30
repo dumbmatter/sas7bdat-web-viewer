@@ -120,14 +120,12 @@ class App extends React.Component {
                         <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
                     </div>
 
-                    <div className="clearfix"></div>
+                    <div className="clearfix" style={{marginBottom: '0.5em'}} />
                     <FileInfo infoVisible={this.state.infoVisible} info={this.state.info} />
                 </div>
                 <div className="container-fluid">
-                    <center>
-                        <Status status={this.state.status} />
-                        <Table rows={this.state.rows} />
-                    </center>
+                    <Status status={this.state.status} />
+                    <Table rows={this.state.rows} />
                 </div>
             </div>
         );

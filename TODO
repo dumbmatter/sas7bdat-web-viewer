@@ -1,12 +1,3 @@
-rendering table is really slow for big files
-  https://react.rocks/example/react-datagrid
-  render first 100 rows, rest "click here to render rest of file"
-  fixed-data-table - need to just estimate the column widths
-  https://react.rocks/example/react-virtualized
-  http://adazzle.github.io/react-data-grid/
-  datatables
-  https://react.rocks/example/react-data-components
-
 parsing in web worker
   csv export too?
 
