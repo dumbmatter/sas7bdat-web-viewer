@@ -5,8 +5,6 @@ const SAS7BDAT = require('./sas7bdat');
 const ExportCsvButton = require('./components/export-csv-button');
 const Table = require('./components/table');
 
-var emitter = new EventEmitter();
-
 const FilenameLabel = props => {
     if (props.filename === undefined) {
         return <span></span>;
@@ -23,8 +21,27 @@ class App extends React.Component {
             rows: [],
         };
 
-        emitter.on('filename', filename => this.setState({filename}));
-        emitter.on('rows', rows => this.setState({rows}));
+        this.emitter = new EventEmitter();
+        this.emitter.on('filename', filename => this.setState({filename}));
+        this.emitter.on('rows', rows => this.setState({rows}));
+    }
+
+    handleFileChange(e) {
+        if (e.target.files.length > 0) {
+            // http://stackoverflow.com/q/4851595/786644
+            const filename = e.target.value.replace('C:\\fakepath\\', '');
+            this.emitter.emit('filename', filename);
+
+            const file = e.target.files[0];
+
+            const reader = new window.FileReader();
+            reader.readAsArrayBuffer(file);
+            reader.onload = event => {
+                SAS7BDAT.parse(event.target.result)
+                    .then(rows => this.emitter.emit('rows', rows))
+                    .catch(err => console.log(err));
+            };
+        }
     }
 
     render() {
@@ -45,7 +62,7 @@ class App extends React.Component {
 
                     <div className="pull-xs-left" style={{marginBottom: '1em'}}>
                         <label className="btn btn-primary btn-lg" for="sas-file">
-                            <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
+                            <input accept=".sas7bdat" type="file" style={{display: 'none'}} onChange={this.handleFileChange.bind(this)} />
                             Select SAS7BDAT File
                         </label>
                         <FilenameLabel filename={this.state.filename} />
@@ -70,20 +87,3 @@ ReactDOM.render(
     <App />,
     document.getElementById('app')
 );
-
-const fileEl = document.getElementById('sas-file');
-fileEl.addEventListener('change', () => {
-    if (fileEl.files.length > 0) {
-        emitter.emit('filename', fileEl.value.replace('C:\\fakepath\\', ''));
-
-        const file = fileEl.files[0];
-
-        const reader = new window.FileReader();
-        reader.readAsArrayBuffer(file);
-        reader.onload = event => {
-            SAS7BDAT.parse(event.target.result)
-                .then(rows => emitter.emit('rows', rows))
-                .catch(err => console.log(err));
-        };
-    }
-});
