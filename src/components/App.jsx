@@ -7,7 +7,6 @@ const FileInfoButton = require('./FileInfoButton.jsx');
 const FilenameLabel = require('./FilenameLabel.jsx');
 const Status = require('./Status.jsx');
 const Table = require('./Table.jsx');
-const parseSas7bdat = require('../lib/parse-sas7bdat');
 
 class App extends React.Component {
     constructor(props) {
@@ -33,13 +32,7 @@ class App extends React.Component {
         });
 
         this.worker = new Worker('worker.js');
-        this.worker.addEventListener('message', e => {
-            if (e.data.type === 'emit') {
-                this.emitter.emit(...e.data.value);
-            } else {
-                console.log(e.data);
-            }
-        });
+        this.worker.addEventListener('message', e => this.emitter.emit(...e.data));
     }
 
     handleFileChange(e) {
@@ -53,7 +46,7 @@ class App extends React.Component {
 
             // http://stackoverflow.com/q/4851595/786644
             const filename = e.target.value.replace('C:\\fakepath\\', '');
-            this.emitter.emit('state', {filename});
+            this.emitter.emit('state', {info: undefined, filename});
 
             const file = e.target.files[0];
             this.worker.postMessage(file);
