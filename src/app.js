@@ -43,19 +43,17 @@ class App extends React.Component {
                         </div>
                     </div>
 
-                    <div style={{marginBottom: '1em'}}>
-                        <div className="pull-xs-left">
-                            <label className="btn btn-primary btn-lg" for="sas-file">
-                                <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
-                                Select SAS7BDAT File
-                            </label>
-                            <FilenameLabel filename={this.state.filename} />
-                        </div>
+                    <div className="pull-xs-left" style={{marginBottom: '1em'}}>
+                        <label className="btn btn-primary btn-lg" for="sas-file">
+                            <input id="sas-file" accept=".sas7bdat" type="file" style={{display: 'none'}} />
+                            Select SAS7BDAT File
+                        </label>
+                        <FilenameLabel filename={this.state.filename} />
+                    </div>
 
-                        <div className="pull-xs-right" style={{paddingTop: '6px'}}>
-                            <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
-                            <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
-                        </div>
+                    <div className="pull-xs-right" style={{paddingTop: '6px'}}>
+                        <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
+                        <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
                     </div>
                 </div>
                 <div className="container-fluid">
