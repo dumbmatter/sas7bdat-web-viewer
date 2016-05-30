@@ -6,6 +6,7 @@
   "scripts": {
     "build": "./tools/build.sh",
     "eslint": "eslint --ext=js,jsx src",
+    "start": "cd build && python -m SimpleHTTPServer",
     "watch": "watchify -d src/app.js -o build/app.js"
   },
   "author": "Jeremy Scheff <jdscheff@gmail.com>",
