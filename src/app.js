@@ -14,7 +14,7 @@ class App extends React.Component {
         this.state = {
             filename: undefined,
             info: undefined,
-            infoVisible: true,
+            infoVisible: false,
             rows: [],
         };
 
