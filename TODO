@@ -1,10 +1,10 @@
-responsive
-
-remove inline styles
-
 minify css
 
 minify js
+
+remove inline styles
+
+google analytics
 
 tests
   react components

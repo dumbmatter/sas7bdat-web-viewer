@@ -93,8 +93,12 @@ class App extends React.Component {
                         </div>
                     </div>
 
-                    <div className="pull-xs-left">
-                        <label className="btn btn-primary btn-lg" htmlFor="sas-file">
+                    <div className="pull-md-left">
+                        <label
+                            className="btn btn-primary btn-lg"
+                            htmlFor="sas-file"
+                            style={{marginRight: '0.25em'}}
+                        >
                             <input
                                 id="sas-file"
                                 accept=".sas7bdat"
@@ -104,10 +108,12 @@ class App extends React.Component {
                             />
                             Select SAS7BDAT File
                         </label>
+                        <div className="clearfix hidden-sm-up" style={{marginBottom: '1.3em'}} />
                         <FilenameLabel error={this.state.error} filename={this.state.filename} />
+                        <div className="clearfix hidden-sm-up" style={{marginBottom: '1.2em'}} />
                     </div>
 
-                    <div className="pull-xs-right" style={{paddingTop: '6px'}}>
+                    <div className="pull-md-right" style={{padding: '6px 0'}}>
                         <FileInfoButton
                             info={this.state.info}
                             infoVisible={this.state.infoVisible}
