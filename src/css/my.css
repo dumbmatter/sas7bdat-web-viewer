@@ -1,0 +1,21 @@
+.filename-label {
+  padding-top: 16px;
+  vertical-align: 2px;
+}
+.list-file-info {
+  list-style-type: none;
+  margin-bottom: 0;
+  padding-left: 0;
+}
+.list-status {
+  font-size: 2.5rem;
+  list-style-type: none;
+  margin-bottom: 0;
+  margin-top: 1em;
+  padding-left: 0;
+  text-align: center;
+}
+.table-sas7bdat {
+  white-space: nowrap;
+  width: inherit;
+}
