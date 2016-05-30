@@ -1,9 +1,3 @@
-tests
-  react components
-  parsing
-  csv export
-  integration
-
 responsive
 
 remove inline styles
@@ -11,6 +5,12 @@ remove inline styles
 minify css
 
 minify js
+
+tests
+  react components
+  parsing
+  csv export
+  integration
 
 Don't read whole file if it's huge
   incremental reading possible, like in node?

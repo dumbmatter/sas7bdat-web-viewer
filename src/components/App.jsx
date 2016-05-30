@@ -71,20 +71,20 @@ class App extends React.Component {
             <div>
                 <div className="container" style={{marginTop: '1em'}}>
                     <div className="row">
-                        <div className="col-md-4">
+                        <div className="col-xs-12 col-md-4">
                             <p>
                                 Here you can view SAS7BDAT files right in your browser, or convert
                                 them to CSV files which you can open in Excel.
                             </p>
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-xs-12 col-md-4">
                             <p>
-                                <span className="text-danger">This is not 100% accurate.</span> Some
-                                files will not parse correctly. If your too file is large, it might
-                                freeze your browser.
+                                <span className="text-danger">This is not perfectly accurate.</span>
+                                Some files will not parse correctly. If your too file is large, it
+                                might freeze your browser.
                             </p>
                         </div>
-                        <div className="col-md-4">
+                        <div className="col-xs-12 col-md-4">
                             <p>
                                 <span className="text-success">Your data will not leave your
                                 computer.</span> Processing is done client-side on your machine.
