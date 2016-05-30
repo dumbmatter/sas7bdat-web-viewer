@@ -1,9 +1,11 @@
-Don't read whole file if it's huge
-  incremental reading possible, like in node?
-    http://stackoverflow.com/q/25810051/786644
-    http://stackoverflow.com/a/14842739/786644
-
 rendering table is really slow for big files
+  https://react.rocks/example/react-datagrid
+  render first 100 rows, rest "click here to render rest of file"
+  fixed-data-table - need to just estimate the column widths
+  https://react.rocks/example/react-virtualized
+  http://adazzle.github.io/react-data-grid/
+  datatables
+  https://react.rocks/example/react-data-components
 
 parsing in web worker
   csv export too?
@@ -26,3 +28,8 @@ remove inline styles
 minify css
 
 minify js
+
+Don't read whole file if it's huge
+  incremental reading possible, like in node?
+    http://stackoverflow.com/q/25810051/786644
+    http://stackoverflow.com/a/14842739/786644
