@@ -69,7 +69,7 @@ class Table extends React.Component {
 
         const colNames = this.props.rows[0];
 
-        const MAX_ROWS = 1000;
+        const MAX_ROWS = 500;
         const rows = this.props.rows.slice(1, MAX_ROWS);
 
         let overflowMessage = null;

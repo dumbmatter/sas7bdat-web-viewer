@@ -95,7 +95,7 @@ class App extends React.Component {
                             />
                             Select SAS7BDAT File
                         </label>
-                        <FilenameLabel filename={this.state.filename} />
+                        <FilenameLabel error={this.state.error} filename={this.state.filename} />
                     </div>
 
                     <div className="pull-xs-right" style={{paddingTop: '6px'}}>
