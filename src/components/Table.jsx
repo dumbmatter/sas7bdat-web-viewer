@@ -11,7 +11,8 @@ class Table extends React.Component {
         if (this.tableRef) {
             const theadRef = this.tableRef.getElementsByTagName('thead')[0];
 
-            // If we already have a fixed header (like from a previous file), remove it and create a new one
+            // If we already have a fixed header (like from a previous file), remove it and create a
+            // new one.
             if (this.tableFixedRef) {
                 document.body.removeChild(this.tableFixedRef);
             }
@@ -70,7 +71,10 @@ class Table extends React.Component {
         const rows = this.props.rows.slice(1);
 
         return (
-            <table ref={ref => { this.tableRef = ref; }} className="table table-bordered table-hover table-sm table-sas7bdat">
+            <table
+                ref={ref => { this.tableRef = ref; }}
+                className="table table-bordered table-hover table-sm table-sas7bdat"
+            >
                 <thead>
                     <tr>
                         {colNames.map((field, j) => <th key={j}>{field}</th>)}

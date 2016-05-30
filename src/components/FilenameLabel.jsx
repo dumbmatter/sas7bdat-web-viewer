@@ -5,7 +5,7 @@ const FilenameLabel = props => {
         return <span></span>;
     }
 
-    return <span className="alert alert-info" style={{marginLeft: '0.25em', paddingTop: '16px', verticalAlign: '2px'}}>{props.filename}</span>;
+    return <span className="alert alert-info filename-label">{props.filename}</span>;
 };
 
 FilenameLabel.propTypes = {

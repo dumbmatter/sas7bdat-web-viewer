@@ -34,14 +34,23 @@ const exportCsv = (filename, rows) => {
 const ExportCsvButton = props => {
     let filename;
     if (props.filename !== undefined) {
-        // Swap sas7bdat with csv at end of filename. If that doesn't produce something that ends in .csv, just tack .csv on to original filename.
+        // Swap sas7bdat with csv at end of filename. If that doesn't produce something that ends in
+        // .csv, just tack .csv on to original filename.
         filename = props.filename.replace(/sas7bdat$/i, 'csv');
         if (filename.indexOf('.csv') !== filename.length - 4) {
             filename = `${props.filename}.csv`;
         }
     }
 
-    return <button className="btn btn-secondary" disabled={props.rows.length === 0} onClick={exportCsv.bind(null, filename, props.rows)}>Export CSV</button>;
+    return (
+        <button
+            className="btn btn-secondary"
+            disabled={props.rows.length === 0}
+            onClick={exportCsv.bind(null, filename, props.rows)}
+        >
+            Export CSV
+        </button>
+    );
 };
 
 ExportCsvButton.propTypes = {

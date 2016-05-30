@@ -7,7 +7,16 @@ const FileInfoButton = props => {
         classes.push('active');
     }
 
-    return <button className={classNames(classes)} disabled={props.filename === undefined} onClick={props.onClick} style={{marginRight: '0.25em'}}>File Info</button>;
+    return (
+        <button
+            className={classNames(classes)}
+            disabled={props.filename === undefined}
+            onClick={props.onClick}
+            style={{marginRight: '0.25em'}}
+        >
+            File Info
+        </button>
+    );
 };
 
 FileInfoButton.propTypes = {

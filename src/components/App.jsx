@@ -35,7 +35,9 @@ class App extends React.Component {
             reader.onload = event => {
                 parseSas7bdat(event.target.result)
                     .then(result => this.emitter.emit('file-contents', result))
-                    .catch(err => console.log(err));
+                    .catch(err => {
+                        throw err;
+                    });
             };
         }
     }
@@ -50,26 +52,48 @@ class App extends React.Component {
                 <div className="container" style={{marginTop: '1em'}}>
                     <div className="row">
                         <div className="col-md-4">
-                            <p>Here you can view SAS7BDAT files right in your browser, or convert them to CSV files which you can open in Excel and many other programs.</p>
+                            <p>
+                                Here you can view SAS7BDAT files right in your browser, or convert
+                                them to CSV files which you can open in Excel and many other
+                                programs.
+                            </p>
                         </div>
                         <div className="col-md-4">
-                            <p><span className="text-danger">SAS7BDAT Web Viewer is not 100% accurate.</span> Some files, such as those with certain types of compression or character encodings, will fail.</p>
+                            <p>
+                                <span className="text-danger">SAS7BDAT Web Viewer is not 100%
+                                accurate.</span> Some files, such as those with certain types of
+                                compression or character encodings, will fail.
+                            </p>
                         </div>
                         <div className="col-md-4">
-                            <p><span className="text-success">Your data will not leave your computer.</span> Processing is done client-side on your machine, nothing is sent to any remote server.</p>
+                            <p>
+                                <span className="text-success">Your data will not leave your
+                                computer.</span> Processing is done client-side on your machine,
+                                nothing is sent to any remote server.
+                            </p>
                         </div>
                     </div>
 
                     <div className="pull-xs-left">
-                        <label className="btn btn-primary btn-lg" for="sas-file">
-                            <input accept=".sas7bdat" type="file" style={{display: 'none'}} onChange={this.handleFileChange.bind(this)} />
+                        <label className="btn btn-primary btn-lg" htmlFor="sas-file">
+                            <input
+                                id="sas-file"
+                                accept=".sas7bdat"
+                                type="file"
+                                style={{display: 'none'}}
+                                onChange={this.handleFileChange.bind(this)}
+                            />
                             Select SAS7BDAT File
                         </label>
                         <FilenameLabel filename={this.state.filename} />
                     </div>
 
                     <div className="pull-xs-right" style={{paddingTop: '6px'}}>
-                        <FileInfoButton filename={this.state.filename} infoVisible={this.state.infoVisible} onClick={this.toggleFileInfoVisibile.bind(this)} />
+                        <FileInfoButton
+                            filename={this.state.filename}
+                            infoVisible={this.state.infoVisible}
+                            onClick={this.toggleFileInfoVisibile.bind(this)}
+                        />
                         <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
                     </div>
 
