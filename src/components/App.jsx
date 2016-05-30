@@ -57,6 +57,15 @@ class App extends React.Component {
         this.setState({infoVisible: !this.state.infoVisible});
     }
 
+    handleCsvError(err) {
+        this.emitter.emit('state', {
+            error: {
+                message: err.message,
+                type: 'CSV generation error',
+            },
+        });
+    }
+
     render() {
         return (
             <div>
@@ -104,7 +113,11 @@ class App extends React.Component {
                             infoVisible={this.state.infoVisible}
                             onClick={() => this.toggleFileInfoVisibile()}
                         />
-                        <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
+                        <ExportCsvButton
+                            errorHandler={err => this.handleCsvError(err)}
+                            filename={this.state.filename}
+                            rows={this.state.rows}
+                        />
                     </div>
 
                     <div className="clearfix" style={{marginBottom: '0.5em'}} />

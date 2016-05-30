@@ -23,11 +23,13 @@ const downloadFile = (filename, text) => {
     }
 };
 
-const exportCsv = (filename, rows) => {
+const exportCsv = (filename, rows, errorHandler) => {
     csvStringify(rows, (err, output) => {
-        if (err) { throw err; }
-
-        downloadFile(filename, output);
+        if (err) {
+            errorHandler(err);
+        } else {
+            downloadFile(filename, output);
+        }
     });
 };
 
@@ -46,7 +48,7 @@ const ExportCsvButton = props => {
         <button
             className="btn btn-secondary"
             disabled={props.rows.length === 0}
-            onClick={() => exportCsv(filename, props.rows)}
+            onClick={() => exportCsv(filename, props.rows, props.errorHandler)}
         >
             Export CSV
         </button>
@@ -54,6 +56,7 @@ const ExportCsvButton = props => {
 };
 
 ExportCsvButton.propTypes = {
+    errorHandler: React.PropTypes.func,
     filename: React.PropTypes.string,
     rows: React.PropTypes.arrayOf(React.PropTypes.array).isRequired,
 };
