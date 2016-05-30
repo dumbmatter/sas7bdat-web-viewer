@@ -24,11 +24,50 @@ const FileInfoButton = props => {
 }
 
 const FileInfo = props => {
-    if (!props.infoVisible) {
+    if (!props.infoVisible || props.info === undefined) {
         return <div></div>;
     }
 
-    return <div><pre>{JSON.stringify(props.info, null, 2)}</pre></div>;
+    const infos = Object.keys(props.info).sort().map(key => <li key={key}>{key}: {props.info[key]}</li>);
+    const cutoff2 = Math.ceil(infos.length / 2);
+    const cutoff3 = Math.ceil(infos.length / 3);
+
+    return (
+        <div className="row">
+            <div className="hidden-md-up">
+                <ul className="list-file-info">
+                    {infos}
+                </ul>
+            </div>
+
+            <div className="col-md-6 hidden-sm-down hidden-xl-up">
+                <ul className="list-file-info">
+                    {infos.slice(0, cutoff2)}
+                </ul>
+            </div>
+            <div className="col-md-6 hidden-sm-down hidden-xl-up">
+                <ul className="list-file-info">
+                    {infos.slice(cutoff2)}
+                </ul>
+            </div>
+
+            <div className="col-xl-4 hidden-lg-down">
+                <ul className="list-file-info">
+                    {infos.slice(0, cutoff3)}
+                </ul>
+            </div>
+            <div className="col-xl-4 hidden-lg-down">
+                <ul className="list-file-info">
+                    {infos.slice(cutoff3, cutoff3 * 2)}
+                </ul>
+            </div>
+            <div className="col-xl-4 hidden-lg-down">
+                <ul className="list-file-info">
+                    {infos.slice(cutoff3 * 2)}
+                </ul>
+            </div>
+        </div>
+    );
 }
 
 class App extends React.Component {
@@ -36,8 +75,9 @@ class App extends React.Component {
         super(props);
         this.state = {
             filename: undefined,
+            info: undefined,
+            infoVisible: true,
             rows: [],
-            infoVisible: false,
         };
 
         this.emitter = new EventEmitter();
