@@ -1,4 +1,5 @@
 Don't read whole file if it's huge
+- incremental reading possible, like in node?
 - if not possible, maybe don't render whole file if it's huge
 
 sticky table header
@@ -10,9 +11,8 @@ parsing in web worker, with progress bar
 react prod mode
 
 error handling
-  display errors/warnings
-  show filename as danger
-
-to csv button
+- display errors/warnings
+- show filename as danger
+- csv errors
 
 responsive

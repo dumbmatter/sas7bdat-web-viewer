@@ -43,11 +43,13 @@ class App extends React.Component {
 
                     <div className="pull-xs-right" style={{paddingTop: '6px'}}>
                         <button className="btn btn-secondary" style={{marginRight: '0.25em'}}>File Info</button>
-                        <ExportCsvButton rows={this.state.rows} />
+                        <ExportCsvButton filename={this.state.filename} rows={this.state.rows} />
                     </div>
                 </div>
-                <div className="container-fluid" style={{textAlign: 'center'}}>
-                    <Table rows={this.state.rows} />
+                <div className="container-fluid">
+                    <center>
+                        <Table rows={this.state.rows} />
+                    </center>
                 </div>
             </div>
         );
