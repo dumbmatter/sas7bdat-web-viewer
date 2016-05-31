@@ -1,10 +1,10 @@
-minify css
-
-minify js
-
 remove inline styles
 
 google analytics
+
+---
+
+minify js
 
 tests
   react components
