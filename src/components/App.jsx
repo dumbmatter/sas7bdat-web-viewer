@@ -80,8 +80,8 @@ class App extends React.Component {
                         <div className="col-xs-12 col-md-4">
                             <p>
                                 <span className="text-danger">This is not perfectly accurate.</span>
-                                Some files will not parse correctly. If your too file is large, it
-                                might freeze your browser.
+                                {' '}Some files will not parse correctly. If your too file is large,
+                                it might freeze your browser.
                             </p>
                         </div>
                         <div className="col-xs-12 col-md-4">
